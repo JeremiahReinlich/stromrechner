@@ -1,0 +1,352 @@
+Erstelle eine mobile Web-App (Progressive Web App) zur Erfassung von Stromverbrauch mit Doppeltarif (HT/NT).
+
+TECHNIK:
+✓ Reines HTML, CSS, Vanilla JavaScript (kein Framework)
+✓ Daten speichern im localStorage
+✓ Mobile First Design
+✓ Sticky Tabellenkopf
+✓ Installierbar als PWA (manifest.json)
+
+DATEIEN:
+✓ index.html
+✓ style.css
+✓ app.js
+✓ manifest.json
+
+-------------------------------------
+
+FUNKTIONEN:
+
+1. TABELLE (Hauptansicht):
+✓ Spalten: Datum | HT | NT | kWh | €
+✓ HT und NT sind editierbar (Zählerstände)
+✓ Alle anderen Felder sind berechnet (read-only)
+✓ Tabelle zeigt jeden Tag (fortlaufend)
+✓ Sticky Header beim Scrollen
+
+-------------------------------------
+
+2. LOGIK ZÄHLER & VERBRAUCH:
+
+✓ Nutzer trägt HT/NT Zählerstände nur an manchen Tagen ein
+✓ Leere Tage bleiben ohne Zählerstand
+✓ Interpolation zwischen zwei Messpunkten
+✓ Tagesverbrauch wird für ALLE Tage berechnet (inkl. Endtag)
+
+Beispiel:
+01.01 = 100
+05.01 = 140
+→ 02–05 bekommen jeweils 10 kWh
+
+✓ HT/NT selbst werden NICHT interpoliert oder angezeigt
+✓ Nur der Tagesverbrauch wird berechnet
+
+-------------------------------------
+
+3. DETAILANSICHT (aufklappbar pro Tag):
+
+✓ Beim Klick auf eine Zeile öffnet sich ein Detailbereich
+
+Eingabefelder:
+✓ Heizungen (Zahl)
+✓ Außentemperatur (Zahl)
+✓ Notiz (Text)
+
+Anzeige:
+✓ HT/Tag
+✓ NT/Tag
+✓ Grundpreis pro Tag
+✓ HT Kosten
+✓ NT Kosten
+✓ Gesamtkosten
+
+-------------------------------------
+
+4. TARIFE (separater Bereich/Tab):
+
+✓ Tarifstruktur:
+  - Von Datum
+  - Bis Datum (optional)
+  - Grundpreis pro Monat
+  - HT Preis (€/kWh)
+  - NT Preis (€/kWh)
+
+✓ Regeln:
+  - Tarife dürfen sich nicht überlappen
+  - Pro Tag wird automatisch der passende Tarif verwendet
+
+-------------------------------------
+
+5. KOSTENBERECHNUNG:
+
+✓ Pro Tag:
+  - Grundpreis/Tag = Monatspreis / tatsächliche Tage im Monat
+  - HT Kosten = HT/Tag * HT Preis
+  - NT Kosten = NT/Tag * NT Preis
+  - Gesamt = Grundpreis + HT + NT
+
+✓ Grundpreis wird auch beim ersten Tag angezeigt (ohne vorherigen Wert)
+
+-------------------------------------
+
+6. FEHLERBEHANDLUNG:
+
+✓ Wenn neuer HT oder NT kleiner als vorheriger:
+  → Fehlermeldung anzeigen
+  → Wert nicht übernehmen
+
+✓ Datum-Existenz-Prüfung (Überschreiben nur durch direktes Anklicken)
+
+-------------------------------------
+
+7. VISUELLES:
+
+✓ Interpolierte Tage leicht grau markieren oder mit Symbol "~"
+✓ Echte Messwerte normal darstellen
+✓ Zahlen rechtsbündig
+
+-------------------------------------
+
+8. BACKUP:
+
+✓ Button: "Backup erstellen"
+  → exportiert alle Daten als JSON Datei
+
+✓ Button: "Backup laden"
+  → importiert JSON und überschreibt aktuelle Daten
+
+✓ Enthält Messwerte, Zusatzdaten und Tarife
+
+-------------------------------------
+
+9. SPEICHERUNG:
+
+✓ Alle Daten im localStorage speichern
+✓ Struktur:
+  - Messwerte
+  - Zusatzdaten (Heizung, Temperatur, Notiz)
+  - Tarife
+
+-------------------------------------
+
+10. UX:
+
+✓ Mobile optimiert
+✓ Floating "+" Button zum Hinzufügen/Öffnen eines Tages
+✓ Jede Tabellenzeile ist klickbar (öffnet Detail)
+✓ Keine Standardwerte → alles manuell eingeben
+✓ Datum-Eingabefeld automatisch fokussiert beim Neu-Hinzufügen
+✓ Enter-Taste zum Springen zwischen Feldern
+
+-------------------------------------
+
+ZIEL:
+
+✓ Die App soll so funktionieren:
+  - Nutzer trägt HT/NT und tägliche Daten ein
+  - App berechnet automatisch Verbrauch, Interpolation und Kosten
+  - Nutzung komplett offline möglich
+
+-------------------------------------
+
+ERGÄNZUNGEN & OPTIMIERUNGEN:
+
+11. TECHNISCHE ERWEITERUNGEN:
+
+✓ Service Worker für PWA-Funktionalität und Offline-Caching
+✓ Responsive Metatag für korrekte Darstellung auf mobilen Geräten
+✓ Touch-optimierte UI-Elemente (größere Klickflächen)
+✓ Ladeindikator bei Datenverarbeitung
+✓ Lazy Loading für große Datenmengen (max 100 Einträge mit "Mehr laden"-Button)
+○ Virtuelles Scrolling bei vielen Einträgen
+✓ Debouncing bei Eingaben
+
+-------------------------------------
+
+12. DATENVALIDIERUNG & SICHERHEIT:
+
+○ Datum-Formatprüfung (DD.MM.YYYY)
+○ Plausibilitätsprüfung bei extremen Verbrauchswerten
+✓ Duplikatsprüfung für gleiche Tage
+○ Validierung der Backup-Dateien vor Import
+○ Optionale Datenverschlüsselung im localStorage
+
+-------------------------------------
+
+13. ZUSÄTZLICHE FEATURES:
+
+○ Undo-Funktion für versehentliche Eingaben
+  - Speichere vor jeder Änderung den kompletten aktuellen Datenzustand als Snapshot
+  - Behalte maximal die letzten 10 Zustände in einer History (FIFO)
+  - Undo stellt immer den vorherigen Zustand wieder her
+  - Snapshot nur in der zentralen Daten-Update-Funktion erstellen (nicht im UI oder Render)
+  - Undo darf keinen neuen Snapshot erzeugen
+  - Nach Undo: UI neu rendern (Interpolation, Tabelle, Zusammenfassungen)
+  - Speicherbedarf: ca. 300-500 KB für 10 Zustände (kein Problem für localStorage)
+  - Desktop UI: Normaler Klick auf Undo-Button
+  - Mobile UI: Long-Press auf Undo-Button (verhindert versehentliche Klicks)
+  - UI-Feedback: Sich schließender Kreis um Undo-Button (CSS Animation, Dauer 1-2 Sekunden)
+    * touchstart: Animation starten
+    * touchend/touchmove: Animation abbrechen
+    * Animation abgeschlossen: Undo ausführen    
+  - Definition von "Änderung": Jede Operation, die den Datenzustand verändert
+    * Speichern eines Messwerts (neuer Eintrag)
+    * Bearbeiten eines Messwerts (bestehender Eintrag ändern)
+    * Löschen eines Messwerts
+    * Speichern von Zusatzdaten (Heizungen, Temperatur, Notiz)
+    * Bearbeiten von Zusatzdaten
+    * Löschen von Zusatzdaten
+    * Speichern eines Tarifs (neuer Tarif)
+    * Bearbeiten eines Tarifs
+    * Löschen eines Tarifs
+    * Importieren eines Backups (ersetzt alle Daten)
+  - Keine Änderung (kein Snapshot): UI-Änderungen, Render-Operationen, Lese-Operationen
+○ Dark Mode Option
+○ Diagramm zur Visualisierung des Verbrauchsverlaufs
+○ Jahresstatistik
+○ Vergleich mit Vorjahr
+○ Verbrauchsprognose basierend auf historischen Daten
+○ "Heute"-Button (Schneller Sprung zum aktuellen Datum / aktuellen Monat)
+○ Modal View/Edit Trennung (Klick auf Zeile → Read-only Detailansicht, Bearbeiten nur über expliziten Button/Icon)
+○ Monatsnavigation (Großer Monatsheader oben, Swipe links/rechts zum Monatswechsel)
+○ Navigation bei Bearbeitung (Beim Editieren automatisch zur entsprechenden Zeile springen)
+
+-------------------------------------
+
+14. PERFORMANCE-OPTIMIERUNG:
+
+○ Effiziente DOM-Manipulation
+○ Minimierung von localStorage-Zugriffen
+○ Caching von berechneten Werten
+○ Kompression der Backup-Daten
+
+-------------------------------------
+
+15. MONATLICHE ZUSAMMENFASSUNG:
+
+✓ Zusammenfassungszeile am Ende jedes Monats (auch wenn Monat noch nicht voll)
+✓ Position: Unter dem letzten eingetragenen Datum eines Monats
+✓ Inhalt der Zeile:
+  - Datum: Monatsname (z.B. "Februar Gesamt")
+  - Spalten: Gesamtverbrauch (kWh) und Gesamtkosten (€)
+✓ Styling: Hervorgehoben (fett, andere Farbe, CSS-Klasse: .monat-zusammenfassung)
+✓ Klickbar → öffnet separates Modal (nicht editierbar)
+✓ Modal-Inhalt:
+  - Monat gesamt (Titel)
+  - Anzahl der Tage im Monat
+  - Heizungen Durchschnittswert (nur Tage mit Werten)
+  - Außentemperatur Durchschnittswert (nur Tage mit Werten)
+  - HT kWh gesamt
+  - NT kWh gesamt
+  - Grundpreis des Monats
+  - HT Kosten gesamt
+  - NT Kosten gesamt
+✓ Automatische Aktualisierung der Zusammenfassung bei neuen Daten
+✓ Kein Lazy Loading-Konflikt (Monat max 31 Tage)
+
+-------------------------------------
+
+16. EINHEITLICHE BERECHNUNG (LÖSUNG):
+
+Gewählte Lösung: Gemeinsame Berechnungsfunktion erstellen
+
+Logik:
+1. Wenn Werte eingetragen werden:
+   - HT/Tag berechnen (aus Differenz zum vorherigen Wert)
+   - NT/Tag berechnen (aus Differenz zum vorherigen Wert)
+   - Grundpreis aus Tarif berechnen (tarif.grundpreis / tageImMonat)
+   - HT Kosten berechnen (HT/Tag * tarif.htPreis)
+   - NT Kosten berechnen (NT/Tag * tarif.ntPreis)
+   - Kosten Gesamt berechnen (HT Kosten + NT Kosten + Grundpreis)
+
+2. Wenn Werte fehlen:
+   - HT/Tag interpolieren
+   - NT/Tag interpolieren
+   - Grundpreis aus Tarif berechnen (tarif.grundpreis / tageImMonat)
+   - HT Kosten berechnen (HT/Tag * tarif.htPreis)
+   - NT Kosten berechnen (NT/Tag * tarif.ntPreis)
+   - Kosten Gesamt berechnen (HT Kosten + NT Kosten + Grundpreis)
+
+Ohne Tarif: Kosten können nicht berechnet werden (zeigen "-" oder "Kein Tarif" an)
+
+Umsetzung:
+- Gemeinsame Berechnungsfunktion erstellen
+- Tabelle verwendet diese Funktion
+- Modal verwendet diese gleiche Funktion
+- HT/Tag und NT/Tag werden interpoliert (wenn Werte fehlen)
+
+Status: ✓ Erledigt
+
+-------------------------------------
+
+17. EXPERTENMODUS:
+
+Funktion:
+- Button "Expertenmodus" in der Header-Navigation
+- Zeigt zusätzliche Spalten in der Tabelle an
+- Detailansicht bleibt unverändert
+
+Zusätzliche Spalten im Expertenmodus:
+1. HT/Tag (berechnet oder interpoliert)
+2. NT/Tag (berechnet oder interpoliert)
+3. Verbrauch Gesamt (bereits vorhanden)
+4. Grundpreis/Tag (aus Tarif)
+5. HT Kosten (berechnet aus HT/Tag)
+6. NT Kosten (berechnet aus NT/Tag)
+7. Kosten Gesamt (bereits vorhanden)
+8. Heizungen (aus Zusatzdaten)
+9. Außentemperatur (aus Zusatzdaten)
+10. Notiz (aus Zusatzdaten, gekürzt auf 20 Zeichen)
+
+Reihenfolge der Spalten:
+Datum | HT | NT | HT/Tag | NT/Tag | Verbrauch Gesamt | Grundpreis/Tag | HT Kosten | NT Kosten | Kosten Gesamt | Heizungen | Temp | Notiz
+
+Konsistente Namen:
+- Grundpreis/Tag (Tabelle und Modal)
+- Kosten Gesamt (Tabelle und Modal)
+
+Status: ✓ Erledigt
+
+-------------------------------------
+
+18. MONATZUSAMMENFASSUNG IM EXPERTENMODUS:
+
+Funktion:
+- Monatszusammenfassung zeigt auch im Expertenmodus alle Spalten an
+- Werte werden dynamisch berechnet wie in der Tabelle (mit berechneKosten)
+
+Spalten im Expertenmodus:
+1. Datum (Monatsname + "Gesamt")
+2. HT: "-"
+3. NT: "-"
+4. HT/Tag Summe (Summe aller HT/Tag Werte im Monat)
+5. NT/Tag Summe (Summe aller NT/Tag Werte im Monat)
+6. Verbrauch Gesamt (Summe HT + NT)
+7. Grundpreis Summe (Grundpreis des Monats)
+8. HT Kosten Summe (Summe aller HT Kosten im Monat)
+9. NT Kosten Summe (Summe aller NT Kosten im Monat)
+10. Kosten Gesamt (Gesamtkosten des Monats)
+11. Heizungen Durchschnitt (Durchschnitt aller Heizungen im Monat)
+12. Temperatur Durchschnitt (Durchschnitt aller Temperaturen im Monat)
+13. Notiz: "-"
+
+Berechnung:
+- HT/Tag, NT/Tag, HT Kosten, NT Kosten werden mit berechneKosten berechnet
+- Werte werden für jeden Tag im Monat berechnet und summiert
+- Heizungen und Temperatur bleiben Durchschnittswerte
+
+Status: ✓ Erledigt
+
+-------------------------------------
+
+19. Echtzeit-Validierung bei Tarifen fehlt
+   - Datum-Validierung funktioniert (über http/https)
+   - Tarif-Überschneidungs-Prüfung nur beim Speichern, nicht während Eingabe
+   - Es wird erst ein Fehler ausgegeben wenn man speichern will
+   - Benötigt: Echtzeit-Validierung bei Tarif-Eingabe (wie bei Datum)
+   - Status: ○ Offen
+
+-------------------------------------
+
+LEGENDE:
+✓ = Erledigt
