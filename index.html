@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Stromrechner</title>
+    <meta name="description" content="Mobile App zur Erfassung von Stromverbrauch mit Doppeltarif">
+    <link rel="stylesheet" href="style.css">
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#2563eb">
+</head>
+<body>
+    <!-- Header -->
+    <header class="app-header">
+        <h1>Basti's Stromrechner</h1>
+        <div class="header-actions">
+            <button id="tarife-btn" class="btn-secondary">Expertenmodus</button>
+            <button id="backup-btn" class="btn-secondary">Backup</button>
+        </div>
+    </header>
+
+    <!-- Undo-Button rechts oben -->
+    <div class="undo-button-wrapper">
+        <button id="undo-btn" class="btn-secondary">
+            <svg width="30" height="30" viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <!-- Uhr in der Mitte -->
+                <circle cx="15" cy="15" r="6" stroke="white" stroke-width="1.5" fill="none"/>
+                <line x1="15" y1="15" x2="15" y2="10" stroke="white" stroke-width="1.5" stroke-linecap="round"/>
+                <line x1="15" y1="15" x2="19" y2="15" stroke="white" stroke-width="1.5" stroke-linecap="round"/>
+                <!-- Pfeil: Nicht geschlossener Kreis mit Pfeilspitze nach links (10-12 Uhr) -->
+                <path d="M 24 15 A 9 9 0 1 0 15 24" stroke="white" stroke-width="2" stroke-linecap="round" fill="none"/>
+                <path d="M 15 24 L 13 22 M 15 24 L 13 26" stroke="white" stroke-width="2" stroke-linecap="round" fill="none"/>
+            </svg>
+        </button>
+        <svg id="undo-circle" class="undo-circle" width="50" height="50" viewBox="0 0 50 50">
+            <circle cx="25" cy="25" r="23" fill="none" stroke="#2563eb" stroke-width="3" stroke-linecap="round"/>
+        </svg>
+    </div>
+
+    <!-- Hauptinhalt -->
+    <main class="app-main">
+        <!-- Tab-Navigation -->
+        <nav class="tab-nav">
+            <button class="tab-btn active" data-tab="tabelle">Tabelle</button>
+            <button class="tab-btn" data-tab="tarife">Tarife</button>
+        </nav>
+
+        <!-- Tab-Inhalte -->
+        <div class="tab-content">
+            <!-- Tabelle Tab -->
+            <div id="tabelle-tab" class="tab-pane active">
+                <!-- Monats-Header -->
+                <div class="monats-header">
+                    <button id="monat-vorher" class="monats-pfeil">‹</button>
+                    <div class="monats-anzeige">
+                        <span id="monat-name">Januar 2024</span>
+                        <!-- Mobile: Kalender-Icon mit verstecktem nativem Picker -->
+                        <div class="monat-picker-mobile">
+                            <button id="monat-picker-btn" class="monat-picker-btn">
+                                <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <rect x="2" y="4" width="16" height="14" rx="2" stroke="currentColor" stroke-width="1.5"/>
+                                    <line x1="6" y1="2" x2="6" y2="6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+                                    <line x1="14" y1="2" x2="14" y2="6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+                                </svg>
+                            </button>
+                            <input type="month" id="monat-picker" class="monat-picker-hidden">
+                        </div>
+                        <!-- Desktop: Select-Boxen für Monat und Jahr -->
+                        <div class="monat-picker-desktop">
+                            <select id="monat-select-monat" class="monat-select">
+                                <option value="0">Januar</option>
+                                <option value="1">Februar</option>
+                                <option value="2">März</option>
+                                <option value="3">April</option>
+                                <option value="4">Mai</option>
+                                <option value="5">Juni</option>
+                                <option value="6">Juli</option>
+                                <option value="7">August</option>
+                                <option value="8">September</option>
+                                <option value="9">Oktober</option>
+                                <option value="10">November</option>
+                                <option value="11">Dezember</option>
+                            </select>
+                            <select id="monat-select-jahr" class="monat-select">
+                                <!-- Werte werden dynamisch gefüllt -->
+                            </select>
+                        </div>
+                    </div>
+                    <button id="monat-naechster" class="monats-pfeil">›</button>
+                </div>
+                <div class="table-container">
+                    <table id="strom-tabelle">
+                        <thead class="sticky-header">
+                            <tr>
+                                <th>Datum</th>
+                                <th>HT</th>
+                                <th>NT</th>
+                                <th>Verbrauch Gesamt</th>
+                                <th>Kosten Gesamt</th>
+                            </tr>
+                        </thead>
+                        <tbody id="tabelle-body">
+                            <!-- Dynamisch generierte Zeilen -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Tarife Tab -->
+            <div id="tarife-tab" class="tab-pane">
+                <div class="tarife-container">
+                    <button id="tarif-hinzufuegen" class="btn-primary">+ Neuer Tarif</button>
+                    <div id="tarife-liste">
+                        <!-- Dynamisch generierte Tarife -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Floating Action Button -->
+    <button id="add-btn" class="fab">+</button>
+
+    <!-- Detailansicht Modal -->
+    <div id="detail-modal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 id="detail-datum">Datum</h2>
+                <button class="close-btn">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="input-group">
+                    <label for="detail-datum-input">Datum:</label>
+                    <input type="date" id="detail-datum-input">
+                    <div id="datum-warnung" class="datum-warnung"></div>
+                </div>
+                <div class="input-group">
+                    <label for="detail-ht">HT Zählerstand:</label>
+                    <input type="number" id="detail-ht" step="0.01">
+                </div>
+                <div class="input-group">
+                    <label for="detail-nt">NT Zählerstand:</label>
+                    <input type="number" id="detail-nt" step="0.01">
+                </div>
+                <div class="input-group">
+                    <label for="detail-heizungen">Heizungen:</label>
+                    <input type="number" id="detail-heizungen">
+                </div>
+                <div class="input-group">
+                    <label for="detail-temperatur">Außentemperatur:</label>
+                    <input type="number" id="detail-temperatur" step="0.1">
+                </div>
+                <div class="input-group">
+                    <label for="detail-notiz">Notiz:</label>
+                    <textarea id="detail-notiz"></textarea>
+                </div>
+                <div class="detail-berechnet">
+                    <h3>Berechnete Werte:</h3>
+                    <div class="berechnet-wert">
+                        <span>HT/Tag:</span>
+                        <span id="detail-ht-tag">0 kWh</span>
+                    </div>
+                    <div class="berechnet-wert">
+                        <span>NT/Tag:</span>
+                        <span id="detail-nt-tag">0 kWh</span>
+                    </div>
+                    <div class="berechnet-wert">
+                        <span>Grundpreis/Tag:</span>
+                        <span id="detail-grundpreis">0.00 €</span>
+                    </div>
+                    <div class="berechnet-wert">
+                        <span>HT Kosten:</span>
+                        <span id="detail-ht-kosten">0.00 €</span>
+                    </div>
+                    <div class="berechnet-wert">
+                        <span>NT Kosten:</span>
+                        <span id="detail-nt-kosten">0.00 €</span>
+                    </div>
+                    <div class="berechnet-wert">
+                        <span>Kosten Gesamt:</span>
+                        <span id="detail-gesamtkosten">0.00 €</span>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button id="detail-speichern" class="btn-primary">Speichern</button>
+                <button id="detail-loeschen" class="btn-danger">Löschen</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Backup Modal -->
+    <div id="backup-modal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Backup</h2>
+                <button class="close-btn">&times;</button>
+            </div>
+            <div class="modal-body">
+                <button id="backup-erstellen" class="btn-primary">Backup erstellen</button>
+                <button id="backup-laden" class="btn-secondary">Backup laden</button>
+                <input type="file" id="backup-file" accept=".json" style="display: none;">
+            </div>
+        </div>
+    </div>
+
+    <!-- Tarif Modal -->
+    <div id="tarif-modal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 id="tarif-modal-titel">Tarif hinzufügen</h2>
+                <button class="close-btn">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="input-group">
+                    <label for="tarif-von">Gültig ab:</label>
+                    <input type="date" id="tarif-von">
+                </div>
+                <div class="input-group">
+                    <label for="tarif-bis">Gültig bis (optional):</label>
+                    <input type="date" id="tarif-bis">
+                </div>
+                <div class="input-group">
+                    <label for="tarif-grundpreis">Grundpreis:</label>
+                    <input type="number" id="tarif-grundpreis" step="0.01">
+                    <select id="tarif-grundpreis-einheit">
+                        <option value="monat">€/Monat</option>
+                        <option value="jahr">€/Jahr</option>
+                    </select>
+                </div>
+                <div class="input-group">
+                    <label for="tarif-ht-preis">HT Preis (€/kWh):</label>
+                    <input type="number" id="tarif-ht-preis" step="0.0001">
+                </div>
+                <div class="input-group">
+                    <label for="tarif-nt-preis">NT Preis (€/kWh):</label>
+                    <input type="number" id="tarif-nt-preis" step="0.0001">
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button id="tarif-speichern" class="btn-primary">Speichern</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Monatliches Zusammenfassungs-Modal -->
+    <div id="monat-zusammenfassung-modal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 id="monat-zusammenfassung-titel">Monat gesamt</h2>
+                <button class="close-btn">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="zusammenfassung-wert">
+                    <span>Anzahl der Tage im Monat:</span>
+                    <span id="monat-tage">0</span>
+                </div>
+                <div class="zusammenfassung-wert">
+                    <span>Heizungen Durchschnittswert:</span>
+                    <span id="monat-heizungen-durchschnitt">-</span>
+                </div>
+                <div class="zusammenfassung-wert">
+                    <span>Außentemperatur Durchschnittswert:</span>
+                    <span id="monat-temperatur-durchschnitt">-</span>
+                </div>
+                <div class="zusammenfassung-wert">
+                    <span>HT kWh gesamt:</span>
+                    <span id="monat-ht-gesamt">0 kWh</span>
+                </div>
+                <div class="zusammenfassung-wert">
+                    <span>NT kWh gesamt:</span>
+                    <span id="monat-nt-gesamt">0 kWh</span>
+                </div>
+                <div class="zusammenfassung-wert">
+                    <span>Grundpreis des Monats:</span>
+                    <span id="monat-grundpreis">0,00 €</span>
+                </div>
+                <div class="zusammenfassung-wert">
+                    <span>HT Kosten gesamt:</span>
+                    <span id="monat-ht-kosten">0,00 €</span>
+                </div>
+                <div class="zusammenfassung-wert">
+                    <span>NT Kosten gesamt:</span>
+                    <span id="monat-nt-kosten">0,00 €</span>
+                </div>
+                <div class="zusammenfassung-wert">
+                    <span>Gesamtkosten:</span>
+                    <span id="monat-gesamtkosten" style="font-weight: bold;">0,00 €</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Fehlermeldung -->
+    <div id="fehlermeldung" class="fehlermeldung"></div>
+
+    <!-- Ladeindikator -->
+    <div id="ladeindikator" class="ladeindikator" style="display: none;">
+        <div class="spinner"></div>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>
