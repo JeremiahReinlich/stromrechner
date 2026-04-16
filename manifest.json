@@ -1,0 +1,52 @@
+{
+    "name": "Stromrechner",
+    "short_name": "Stromrechner",
+    "description": "Mobile App zur Erfassung von Stromverbrauch mit Doppeltarif",
+    "start_url": ".",
+    "display": "standalone",
+    "background_color": "#f8fafc",
+    "theme_color": "#2563eb",
+    "orientation": "portrait",
+    "scope": ".",
+    "lang": "de",
+    "categories": ["utilities", "productivity"],
+    "icons": [
+        {
+            "src": "data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTkyIiBoZWlnaHQ9IjE5MiIgdmlld0JveD0iMCAwIDE5MiAxOTIiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjxyZWN0IHdpZHRoPSIxOTIiIGhlaWdodD0iMTkyIiByeD0iMjQiIGZpbGw9IiMyNTYzZWIiLz4KPHBhdGggZD0iTTExMCAyMEw3MCAxMDBoMjhsLTE2IDcyIDQ4LTg4SDEwMGwxMC02NHoiIGZpbGw9IiNmZmQ1MDAiLz4KPC9zdmc+Cg==",
+            "sizes": "192x192",
+            "type": "image/svg+xml"
+        },
+        {
+            "src": "data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNTEyIiBoZWlnaHQ9IjUxMiIgdmlld0JveD0iMCAwIDUxMiA1MTIiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjxyZWN0IHdpZHRoPSI1MTIiIGhlaWdodD0iNTEyIiByeD0iNjQiIGZpbGw9IiMyNTYzZWIiLz4KPHBhdGggZD0iTTI5MyA1NEwxODcgMjY4aDc1bC00MyAxOTIgMTI4LTIzNGgtNzVsMjctMTcyeiIgZmlsbD0iI2ZmZDUwMCIvPgo8L3N2Zz4K",
+            "sizes": "512x512",
+            "type": "image/svg+xml"
+        }
+    ],
+    "screenshots": [
+        {
+            "src": "data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMzIwIiBoZWlnaHQ9IjU2OCIgdmlld0JveD0iMCAwIDMyMCA1NjgiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjxyZWN0IHdpZHRoPSIzMjAiIGhlaWdodD0iNTY4IiBmaWxsPSIjZjhmYWZjIi8+CjxyZWN0IHdpZHRoPSIzMjAiIGhlaWdodD0iNzIiIGZpbGw9IiMyNTYzZWIiLz4KPHRleHQgeD0iMTYwIiB5PSI0NSIgZm9udC1mYW1pbHk9IkFyaWFsIiBmb250LXNpemU9IjI0IiBmaWxsPSJ3aGl0ZSIgdGV4dC1hbmNob3I9Im1pZGRsZSI+U3Ryb21yZWNobmVyPC90ZXh0Pgo8cmVjdCB4PSIxNiIgeT0iODgiIHdpZHRoPSIyODgiIGhlaWdodD0iMzIiIGZpbGw9IndoaXRlIi8+Cjx0ZXh0IHg9IjMyIiB5PSIxMDgiIGZvbnQtZmFtaWx5PSJBcmlhbCIgZm9udC1zaXplPSIxNCIgZmlsbD0iIzM3NDE1MSI+RGF0dW08L3RleHQ+Cjx0ZXh0IHg9IjEwMCIgeT0iMTA4IiBmb250LWZhbWlseT0iQXJpYWwiIGZvbnQtc2l6ZT0iMTQiIGZpbGw9IiMzNzQxNTEiPkhUPC90ZXh0Pgo8dGV4dCB4PSIxNjAiIHk9IjEwOCIgZm9udC1mYW1pbHk9IkFyaWFsIiBmb250LXNpemU9IjE0IiBmaWxsPSIjMzc0MTUxIj5OVDwvdGV4dD4KPHRleHQgeD0iMjIwIiB5PSIxMDgiIGZvbnQtZmFtaWx5PSJBcmlhbCIgZm9udC1zaXplPSIxNCIgZmlsbD0iIzM3NDE1MSI+a1doPC90ZXh0Pgo8dGV4dCB4PSIyNjAiIHk9IjEwOCIgZm9udC1mYW1pbHk9IkFyaWFsIiBmb250LXNpemU9IjE0IiBmaWxsPSIjMzc0MTUxIj7DjTwvdGV4dD4KPHJlY3QgeD0iMTYiIHk9IjE0MCIgd2lkdGg9IjI4OCIgaGVpZ2h0PSIyNCIgZmlsbD0iI2YxZjVmOSIgc3Ryb2tlPSIjZTJlOGYwIi8+Cjx0ZXh0IHg9IjMyIiB5PSIxNTYiIGZvbnQtZmFtaWx5PSJBcmlhbCIgZm9udC1zaXplPSIxMiIgZmlsbD0iIzY0NzhiOCI+MDEuMDEuMjAyNDwvdGV4dD4KPHJlY3QgeD0iMTYiIHk9IjE2OCIgd2lkdGg9IjI4OCIgaGVpZ2h0PSIyNCIgZmlsbD0iI2YxZjVmOSIgc3Ryb2tlPSIjZTJlOGYwIi8+Cjx0ZXh0IHg9IjMyIiB5PSIxODQiIGZvbnQtZmFtaWx5PSJBcmlhbCIgZm9udC1zaXplPSIxMiIgZmlsbD0iIzY0NzhiOCI+MDIuMDEuMjAyNDwvdGV4dD4KPGNpcmNsZSBjeD0iMjgwIiBjeT0iNDAwIiByPSIyOCIgZmlsbD0iIzI1NjNiZSIvPgo8dGV4dCB4PSIyODAiIHk9IjQwNyIgZm9udC1mYW1pbHk9IkFyaWFsIiBmb250LXNpemU9IjI0IiBmaWxsPSJ3aGl0ZSIgdGV4dC1hbmNob3I9Im1pZGRsZSI+KzwvdGV4dD4KPC9zdmc+Cjw=",
+            "sizes": "320x568",
+            "type": "image/svg+xml",
+            "form_factor": "narrow"
+        }
+    ],
+    "shortcuts": [
+        {
+            "name": "Neuer Eintrag",
+            "short_name": "Eintrag",
+            "description": "Neuen Stromzähler-Eintrag hinzufügen",
+            "url": "?action=new",
+            "icons": [
+                {
+                    "src": "data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iOTYiIGhlaWdodD0iOTYiIHZpZXdCb3g9IjAgMCA5NiA5NiIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPGNpcmNsZSBjeD0iNDgiIGN5PSI0OCIgcj0iNDgiIGZpbGw9IiMyNTYzZWIiLz4KPHBhdGggZD0iTTQ4IDI0VjQ4SDI0VjU2SDQ4VjgwSDU2VjU2SDgwVjQ4SDU2VjI0SDQ4WiIgZmlsbD0id2hpdGUiLz4KPC9zdmc+Cjw=",
+                    "sizes": "96x96"
+                }
+            ]
+        }
+    ],
+    "related_applications": [],
+    "prefer_related_applications": false,
+    "edge_side_panel": {
+        "preferred_width": 400
+    }
+}
