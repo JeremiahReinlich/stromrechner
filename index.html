@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Stromrechner</title>
+    <meta name="description" content="Mobile App zur Erfassung von Stromverbrauch mit Doppeltarif">
+    <link rel="stylesheet" href="style.css">
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#2563eb">
+</head>
+<body>
+    <!-- Header -->
+    <header class="app-header">
+        <h1>Basti's Stromrechner</h1>
+        <div class="header-actions">
+            <button id="refresh-btn" class="btn-secondary">
+                <svg width="20" height="20" viewBox="0 0 487.23 487.23" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M55.323,203.641c15.664,0,29.813-9.405,35.872-23.854c25.017-59.604,83.842-101.61,152.42-101.61
+                        c37.797,0,72.449,12.955,100.23,34.442l-21.775,3.371c-7.438,1.153-13.224,7.054-14.232,14.512
+                        c-1.01,7.454,3.008,14.686,9.867,17.768l119.746,53.872c5.249,2.357,11.33,1.904,16.168-1.205
+                        c4.83-3.114,7.764-8.458,7.796-14.208l0.621-131.943c0.042-7.506-4.851-14.144-12.024-16.332
+                        c-7.185-2.188-14.947,0.589-19.104,6.837l-16.505,24.805C370.398,26.778,310.1,0,243.615,0C142.806,0,56.133,61.562,19.167,149.06
+                        c-5.134,12.128-3.84,26.015,3.429,36.987C29.865,197.023,42.152,203.641,55.323,203.641z"/>
+                    <path d="M464.635,301.184c-7.27-10.977-19.558-17.594-32.728-17.594c-15.664,0-29.813,9.405-35.872,23.854
+                        c-25.018,59.604-83.843,101.61-152.42,101.61c-37.798,0-72.45-12.955-100.232-34.442l21.776-3.369
+                        c7.437-1.153,13.223-7.055,14.233-14.514c1.009-7.453-3.008-14.686-9.867-17.768L49.779,285.089
+                        c-5.25-2.356-11.33-1.905-16.169,1.205c-4.829,3.114-7.764,8.458-7.795,14.207l-0.622,131.943
+                        c-0.042,7.506,4.85,14.144,12.024,16.332c7.185,2.188,14.948-0.59,19.104-6.839l16.505-24.805
+                        c44.004,43.32,104.303,70.098,170.788,70.098c100.811,0,187.481-61.561,224.446-149.059
+                        C473.197,326.043,471.903,312.157,464.635,301.184z"/>
+                </svg>
+            </button>
+            <button id="tarife-btn" class="btn-secondary">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <!-- Vertikale Linie mit Pfeilspitzen -->
+                    <line x1="12" y1="4" x2="12" y2="20" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/>
+                    <line x1="12" y1="1" x2="8" y2="5" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+                    <line x1="12" y1="1" x2="16" y2="5" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+                    <line x1="12" y1="23" x2="8" y2="19" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+                    <line x1="12" y1="23" x2="16" y2="19" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+                    <!-- Horizontale Linie mit Pfeilspitzen -->
+                    <line x1="4" y1="12" x2="20" y2="12" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/>
+                    <line x1="1" y1="12" x2="5" y2="8" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+                    <line x1="1" y1="12" x2="5" y2="16" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+                    <line x1="23" y1="12" x2="19" y2="8" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+                    <line x1="23" y1="12" x2="19" y2="16" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+            </button>
+            <button id="backup-btn" class="btn-secondary">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                    <path fill-rule="evenodd" clip-rule="evenodd" d="M4 5C4 4.44772 4.44772 4 5 4H7V7C7 7.55228 7.44772 8 8 8H15C15.5523 8 16 7.55228 16 7V4H16.1716C16.4368 4 16.6911 4.10536 16.8787 4.29289L19.7071 7.12132C19.8946 7.30886 20 7.56321 20 7.82843V19C20 19.5523 19.5523 20 19 20H18V13C18 12.4477 17.5523 12 17 12H7C6.44772 12 6 12.4477 6 13V20H5C4.44772 20 4 19.5523 4 19V5ZM8 20H16V14H8V20ZM14 4H9V6H14V4ZM5 2C3.34315 2 2 3.34315 2 5V19C2 20.6569 3.34315 22 5 22H19C20.6569 22 22 20.6569 22 19V7.82843C22 7.03278 21.6839 6.26972 21.1213 5.70711L18.2929 2.87868C17.7303 2.31607 16.9672 2 16.1716 2H5Z"/>
+                </svg>
+            </button>
+        </div>
+    </header>
+
+    <!-- Undo-Button rechts oben -->
+    <div class="undo-button-wrapper">
+        <button id="undo-btn" class="btn-secondary">
+            <svg width="30" height="30" viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <!-- Uhr in der Mitte -->
+                <circle cx="15" cy="15" r="6" stroke="white" stroke-width="1.5" fill="none"/>
+                <line x1="15" y1="15" x2="15" y2="10" stroke="white" stroke-width="1.5" stroke-linecap="round"/>
+                <line x1="15" y1="15" x2="19" y2="15" stroke="white" stroke-width="1.5" stroke-linecap="round"/>
+                <!-- Pfeil: Nicht geschlossener Kreis mit Pfeilspitze nach links (10-12 Uhr) -->
+                <path d="M 24 15 A 9 9 0 1 0 15 24" stroke="white" stroke-width="2" stroke-linecap="round" fill="none"/>
+                <path d="M 15 24 L 13 22 M 15 24 L 13 26" stroke="white" stroke-width="2" stroke-linecap="round" fill="none"/>
+            </svg>
+        </button>
+        <svg id="undo-circle" class="undo-circle" width="50" height="50" viewBox="0 0 50 50">
+            <circle cx="25" cy="25" r="23" fill="none" stroke="#2563eb" stroke-width="3" stroke-linecap="round"/>
+        </svg>
+    </div>
+
+    <!-- Hauptinhalt -->
+    <main class="app-main">
+        <!-- Tab-Navigation -->
+        <nav class="tab-nav">
+            <button class="tab-btn active" data-tab="tabelle">Tabelle</button>
+            <button class="tab-btn" data-tab="tarife">Tarife</button>
+        </nav>
+
+        <!-- Tab-Inhalte -->
+        <div class="tab-content">
+            <!-- Tabelle Tab -->
+            <div id="tabelle-tab" class="tab-pane active">
+                <!-- Monats-Header -->
+                <div class="monats-header">
+                    <button id="monat-vorher" class="monats-pfeil">‹</button>
+                    <div class="monats-anzeige">
+                        <span id="monat-name">Januar 2024</span>
+                        <!-- Mobile: Kalender-Icon mit verstecktem nativem Picker -->
+                        <div class="monat-picker-mobile">
+                            <button id="monat-picker-btn" class="monat-picker-btn">
+                                <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <rect x="2" y="4" width="16" height="14" rx="2" stroke="currentColor" stroke-width="1.5"/>
+                                    <line x1="6" y1="2" x2="6" y2="6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+                                    <line x1="14" y1="2" x2="14" y2="6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+                                </svg>
+                            </button>
+                            <input type="month" id="monat-picker" class="monat-picker-hidden">
+                        </div>
+                        <!-- Desktop: Select-Boxen für Monat und Jahr -->
+                        <div class="monat-picker-desktop">
+                            <select id="monat-select-monat" class="monat-select">
+                                <option value="0">Januar</option>
+                                <option value="1">Februar</option>
+                                <option value="2">März</option>
+                                <option value="3">April</option>
+                                <option value="4">Mai</option>
+                                <option value="5">Juni</option>
+                                <option value="6">Juli</option>
+                                <option value="7">August</option>
+                                <option value="8">September</option>
+                                <option value="9">Oktober</option>
+                                <option value="10">November</option>
+                                <option value="11">Dezember</option>
+                            </select>
+                            <select id="monat-select-jahr" class="monat-select">
+                                <!-- Werte werden dynamisch gefüllt -->
+                            </select>
+                        </div>
+                    </div>
+                    <button id="monat-naechster" class="monats-pfeil">›</button>
+                </div>
+                <div class="table-container">
+                    <table id="strom-tabelle">
+                        <thead class="sticky-header">
+                            <tr>
+                                <th>Datum</th>
+                                <th>HT</th>
+                                <th>NT</th>
+                                <th>Verbrauch Gesamt</th>
+                                <th>Kosten Gesamt</th>
+                            </tr>
+                        </thead>
+                        <tbody id="tabelle-body">
+                            <!-- Dynamisch generierte Zeilen -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Tarife Tab -->
+            <div id="tarife-tab" class="tab-pane">
+                <div class="tarife-container">
+                    <button id="tarif-hinzufuegen" class="btn-primary">+ Neuer Tarif</button>
+                    <div id="tarife-liste">
+                        <!-- Dynamisch generierte Tarife -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Floating Action Button -->
+    <button id="add-btn" class="fab">+</button>
+
+    <!-- Detailansicht Modal -->
+    <div id="detail-modal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 id="detail-datum">Datum</h2>
+                <button class="close-btn">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="input-group">
+                    <label for="detail-datum-input">Datum:</label>
+                    <input type="date" id="detail-datum-input">
+                    <div id="datum-warnung" class="datum-warnung"></div>
+                </div>
+                <div class="input-group">
+                    <label for="detail-ht">HT Zählerstand:</label>
+                    <input type="number" id="detail-ht" step="0.01">
+                </div>
+                <div class="input-group">
+                    <label for="detail-nt">NT Zählerstand:</label>
+                    <input type="number" id="detail-nt" step="0.01">
+                </div>
+                <div class="input-group">
+                    <label for="detail-heizungen">Heizungen:</label>
+                    <input type="number" id="detail-heizungen">
+                </div>
+                <div class="input-group">
+                    <label for="detail-temperatur">Außentemperatur:</label>
+                    <input type="number" id="detail-temperatur" step="0.1">
+                </div>
+                <div class="input-group">
+                    <label for="detail-notiz">Notiz:</label>
+                    <textarea id="detail-notiz"></textarea>
+                </div>
+                <div class="detail-berechnet">
+                    <h3>Berechnete Werte:</h3>
+                    <div class="berechnet-wert">
+                        <span>HT/Tag:</span>
+                        <span id="detail-ht-tag">0 kWh</span>
+                    </div>
+                    <div class="berechnet-wert">
+                        <span>NT/Tag:</span>
+                        <span id="detail-nt-tag">0 kWh</span>
+                    </div>
+                    <div class="berechnet-wert">
+                        <span>Grundpreis/Tag:</span>
+                        <span id="detail-grundpreis">0.00 €</span>
+                    </div>
+                    <div class="berechnet-wert">
+                        <span>HT Kosten:</span>
+                        <span id="detail-ht-kosten">0.00 €</span>
+                    </div>
+                    <div class="berechnet-wert">
+                        <span>NT Kosten:</span>
+                        <span id="detail-nt-kosten">0.00 €</span>
+                    </div>
+                    <div class="berechnet-wert">
+                        <span>Kosten Gesamt:</span>
+                        <span id="detail-gesamtkosten">0.00 €</span>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button id="detail-speichern" class="btn-primary">Speichern</button>
+                <button id="detail-loeschen" class="btn-danger">Löschen</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Backup Modal -->
+    <div id="backup-modal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Backup</h2>
+                <button class="close-btn">&times;</button>
+            </div>
+            <div class="modal-body">
+                <button id="backup-erstellen" class="btn-primary">Backup erstellen</button>
+                <button id="backup-laden" class="btn-secondary">Backup laden</button>
+                <input type="file" id="backup-file" accept=".json" style="display: none;">
+            </div>
+        </div>
+    </div>
+
+    <!-- Tarif Modal -->
+    <div id="tarif-modal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 id="tarif-modal-titel">Tarif hinzufügen</h2>
+                <button class="close-btn">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="input-group">
+                    <label for="tarif-von">Gültig ab:</label>
+                    <input type="date" id="tarif-von">
+                </div>
+                <div class="input-group">
+                    <label for="tarif-bis">Gültig bis (optional):</label>
+                    <input type="date" id="tarif-bis">
+                </div>
+                <div class="input-group">
+                    <label for="tarif-grundpreis">Grundpreis:</label>
+                    <input type="number" id="tarif-grundpreis" step="0.01">
+                    <select id="tarif-grundpreis-einheit">
+                        <option value="monat">€/Monat</option>
+                        <option value="jahr">€/Jahr</option>
+                    </select>
+                </div>
+                <div class="input-group">
+                    <label for="tarif-ht-preis">HT Preis (€/kWh):</label>
+                    <input type="number" id="tarif-ht-preis" step="0.0001">
+                </div>
+                <div class="input-group">
+                    <label for="tarif-nt-preis">NT Preis (€/kWh):</label>
+                    <input type="number" id="tarif-nt-preis" step="0.0001">
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button id="tarif-speichern" class="btn-primary">Speichern</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Monatliches Zusammenfassungs-Modal -->
+    <div id="monat-zusammenfassung-modal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 id="monat-zusammenfassung-titel">Monat gesamt</h2>
+                <button class="close-btn">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="zusammenfassung-wert">
+                    <span>Anzahl der Tage im Monat:</span>
+                    <span id="monat-tage">0</span>
+                </div>
+                <div class="zusammenfassung-wert">
+                    <span>Heizungen Durchschnittswert:</span>
+                    <span id="monat-heizungen-durchschnitt">-</span>
+                </div>
+                <div class="zusammenfassung-wert">
+                    <span>Außentemperatur Durchschnittswert:</span>
+                    <span id="monat-temperatur-durchschnitt">-</span>
+                </div>
+                <div class="zusammenfassung-wert">
+                    <span>HT kWh gesamt:</span>
+                    <span id="monat-ht-gesamt">0 kWh</span>
+                </div>
+                <div class="zusammenfassung-wert">
+                    <span>NT kWh gesamt:</span>
+                    <span id="monat-nt-gesamt">0 kWh</span>
+                </div>
+                <div class="zusammenfassung-wert">
+                    <span>Grundpreis des Monats:</span>
+                    <span id="monat-grundpreis">0,00 €</span>
+                </div>
+                <div class="zusammenfassung-wert">
+                    <span>HT Kosten gesamt:</span>
+                    <span id="monat-ht-kosten">0,00 €</span>
+                </div>
+                <div class="zusammenfassung-wert">
+                    <span>NT Kosten gesamt:</span>
+                    <span id="monat-nt-kosten">0,00 €</span>
+                </div>
+                <div class="zusammenfassung-wert">
+                    <span>Gesamtkosten:</span>
+                    <span id="monat-gesamtkosten" style="font-weight: bold;">0,00 €</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Fehlermeldung -->
+    <div id="fehlermeldung" class="fehlermeldung"></div>
+
+    <!-- Ladeindikator -->
+    <div id="ladeindikator" class="ladeindikator" style="display: none;">
+        <div class="spinner"></div>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>
