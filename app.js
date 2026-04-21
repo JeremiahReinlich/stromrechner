@@ -177,11 +177,11 @@ class StromrechnerApp {
 
         // Monatsnavigation
         document.getElementById('monat-vorher').addEventListener('click', () => {
-            console.log('Monat vorher Button geklickt');
+            alert('Monat vorher Button geklickt');
             this.wechsleMonat('vorher');
         });
         document.getElementById('monat-naechster').addEventListener('click', () => {
-            console.log('Monat nächster Button geklickt');
+            alert('Monat nächster Button geklickt');
             this.wechsleMonat('naechster');
         });
 
